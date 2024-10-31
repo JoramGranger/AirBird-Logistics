@@ -51,13 +51,17 @@ export function generateRandomString(length: number): string {
 
 /**
  * Debounces a function
+ * @template T - Function type
  * @param func - Function to debounce
  * @param wait - Debounce wait time in milliseconds
  * @returns Debounced function
  */
-export function debounce<T extends (...args: any[]) => any>(func: T, wait: number): (...args: Parameters<T>) => void {
+export function debounce<Args extends unknown[], R>(
+  func: (...args: Args) => R,
+  wait: number
+): (...args: Args) => void {
   let timeout: NodeJS.Timeout | null = null
-  return (...args: Parameters<T>) => {
+  return (...args: Args) => {
     if (timeout) clearTimeout(timeout)
     timeout = setTimeout(() => func(...args), wait)
   }
